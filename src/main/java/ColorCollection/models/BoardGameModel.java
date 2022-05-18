@@ -24,18 +24,10 @@ public class BoardGameModel {
         return board[i][j].get();
     }
 
-    public void move(int i, int j) {
+    public void move(PlayerModel playerModel,int i, int j) {
         //change the color of the circle
         //check if it goal state
-        board[i][j].set(
-                switch (board[i][j].get()) {
-                    case EMPTY -> Square.RED;
-                    case RED -> Square.BLUE;
-                    case BLUE -> Square.YELLOW;
-                    case YELLOW -> Square.GREEN;
-                    case GREEN -> Square.EMPTY;
-                }
-        );
+        setSquareColor(playerModel,i,j);
     }
 
     public String toString() {
@@ -49,22 +41,7 @@ public class BoardGameModel {
         return sb.toString();
     }
 
-    /*
-    new method{
-    check which players turn it is if its player one only allow red and blue
-    if its player two only allow yellow and green
-    board[i][j].set(
-                switch (board[i][j].get()) {
-                    case EMPTY -> Square.RED;
-                    case RED -> Square.BLUE;
-                    case BLUE -> Square.YELLOW;
-                    case YELLOW -> Square.GREEN;
-                    case GREEN -> Square.EMPTY;
-                }
-        );
-        using this
-    }
-
+  /*
     new method goal state (BoardGameModel model){
     check if the board has reached the ending.
     for (var i = 0; i < BOARD_SIZE; i++) {
@@ -74,16 +51,121 @@ public class BoardGameModel {
         return true;
     }
     }
-
-    new method change player(PlayerModel playerModel){
-        if (playermode.getfirstplayer == true){
-        playermodel."setfirsplay" = false;
-        }else
-        playermodel."setfirsplay" = true;
-
-
-    }
      */
+    public boolean columnGoalCheck(){
+        int count;
+        for(var j = 0; j < BOARD_SIZE ;j++){
+            count = 0;
+            for(var i = 0 ; i < BOARD_SIZE; i++){
+                ReadOnlyObjectWrapper<Square> currentCell = board[i][j];
+
+                if (i==0){
+                    ReadOnlyObjectWrapper<Square> nextCell = board[i+1][j];
+                    if(currentCell.getValue() != Square.EMPTY && currentCell.getValue() != nextCell.getValue()){
+                        count++;
+                    }
+                }
+                else if (i==1){
+                    ReadOnlyObjectWrapper<Square> nextCell = board[i+1][j];
+                    if(currentCell.getValue() != Square.EMPTY && currentCell.getValue() != nextCell.getValue()){
+                        count++;
+                    }
+                }
+                else if (i==2){
+                    ReadOnlyObjectWrapper<Square> prev1 = board[i-2][j];
+                    ReadOnlyObjectWrapper<Square> nextCell = board[i+1][j];
+                    if(currentCell.getValue() != Square.EMPTY && currentCell.getValue() != nextCell.getValue() &&
+                            currentCell.getValue() != prev1.getValue()){
+                        count++;
+                    }
+                }
+                else if (i==3){
+                    ReadOnlyObjectWrapper<Square> prev1 = board[i-2][j];
+                    ReadOnlyObjectWrapper<Square> prev2 = board[i-3][j];
+                    if(currentCell.getValue() != Square.EMPTY && currentCell.getValue() != prev1.getValue() && currentCell.getValue() != prev2.getValue()){
+                        count++;
+                    }
+                }
+            }
+            if(count==4){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean rowGoalCheck(){
+        int count;
+        for(var i = 0; i < BOARD_SIZE ;i++){
+            count = 0;
+            for(var j = 0 ; j < BOARD_SIZE; j++){
+                ReadOnlyObjectWrapper<Square> currentCell = board[i][j];
+
+                if (j==0){
+                    ReadOnlyObjectWrapper<Square> nextCell = board[i][j+1];
+                    if(currentCell.getValue() != Square.EMPTY && currentCell.getValue() != nextCell.getValue()){
+                        count++;
+                    }
+                }
+                else if (j==1){
+                    ReadOnlyObjectWrapper<Square> nextCell = board[i][j+1];
+                    if(currentCell.getValue() != Square.EMPTY && currentCell.getValue() != nextCell.getValue()){
+                        count++;
+                    }
+                }
+                else if (j==2){
+                    ReadOnlyObjectWrapper<Square> prev1 = board[i][j-2];
+                    ReadOnlyObjectWrapper<Square> nextCell = board[i][j+1];
+                    if(currentCell.getValue() != Square.EMPTY && currentCell.getValue() != nextCell.getValue() &&
+                            currentCell.getValue() != prev1.getValue()){
+                        count++;
+                    }
+                }
+                else if (j==3){
+                    ReadOnlyObjectWrapper<Square> prev1 = board[i][j-2];
+                    ReadOnlyObjectWrapper<Square> prev2 = board[i][j-3];
+                    if(currentCell.getValue() != Square.EMPTY && currentCell.getValue() != prev1.getValue() && currentCell.getValue() != prev2.getValue()){
+                        count++;
+                    }
+                }
+            }
+            if(count==4){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Boolean isGoalState(){
+        if(rowGoalCheck() || columnGoalCheck()){
+            return true;
+        }
+        return false;
+    }
+
+    public void setSquareColor(PlayerModel playerModel,int i, int j){
+        if (playerModel.getFirstPlayersTurn()){
+                board[i][j].set(
+                        switch (board[i][j].get()) {
+                            case EMPTY -> Square.RED;
+                            case RED -> Square.BLUE;
+                            case BLUE -> Square.EMPTY;
+                            case YELLOW, GREEN -> null;
+                        }
+                );
+
+        }else if(!playerModel.getFirstPlayersTurn()){
+            board[i][j].set(
+                    switch (board[i][j].get()) {
+                        case EMPTY -> Square.YELLOW;
+                        case RED, BLUE -> null;
+                        case YELLOW -> Square.GREEN;
+                        case GREEN -> Square.EMPTY;
+                    }
+            );
+        }
+    }
+
     public void changePlayer(PlayerModel playerModel){
         if(playerModel.getFirstPlayersTurn()){
             playerModel.setFirstPlayersTurn(false);

@@ -61,13 +61,18 @@ public class GameCont {
         var square = (StackPane) event.getSource();
         var row = GridPane.getRowIndex(square);
         var col = GridPane.getColumnIndex(square);
-        System.out.printf("Click on square (%d,%d)%n", row, col);
-        model.move(row, col);
+        //System.out.printf("Click on square (%d,%d)%n", row, col);
+        model.move(playerModel, row, col);
+        System.out.println(model.toString());
+        if(model.isGoalState()){
+            System.out.println("WIN");
+        }
     }
 
     @FXML
     void endTurnPressed(ActionEvent event) {
         //change the player
+        model.changePlayer(playerModel);
     }
 
 }

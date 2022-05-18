@@ -27,4 +27,5 @@ public class PlayerModel {
     public void setFirstPlayersTurn(Boolean newSetFirstPlayersTurn){
         this.firstPlayersTurn = newSetFirstPlayersTurn;
     }
+
 }
