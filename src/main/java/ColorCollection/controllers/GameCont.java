@@ -1,10 +1,13 @@
-package ColorCollection;
+package ColorCollection.controllers;
 
+import ColorCollection.models.BoardGameModel;
+import javafx.beans.binding.ObjectBinding;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 public class GameCont {
@@ -22,21 +25,40 @@ public class GameCont {
         this.secondPlayer = secondPlayer;
     }
 
+    BoardGameModel model = new BoardGameModel();
+
     @FXML
     private void initialize() {
         for (var i = 0; i < board.getRowCount(); i++) {
             for (var j = 0; j < board.getColumnCount(); j++) {
-                var square = createSquare();
+                var square = createSquare(i,j);
                 board.add(square, j, i);
             }
         }
     }
 
-    private StackPane createSquare() {
+    private StackPane createSquare(int i, int j) {
         var square = new StackPane();
         square.getStyleClass().add("square");
         var piece = new Circle(50);
-        piece.setFill(Color.TRANSPARENT);
+
+        piece.fillProperty().bind(
+                new ObjectBinding<Paint>() {
+                    {
+                        super.bind(model.squareProperty(i, j));
+                    }
+                    @Override
+                    protected Paint computeValue() {
+                        return switch (model.squareProperty(i, j).get()) {
+                            case EMPTY -> Color.TRANSPARENT;
+                            case RED -> Color.RED;
+                            case BLUE -> Color.BLUE;
+                            case YELLOW -> Color.YELLOW;
+                            case GREEN -> Color.GREEN;
+                        };
+                    }
+                }
+        );
         square.getChildren().add(piece);
         square.setOnMouseClicked(this::handleMouseClick);
         return square;
@@ -48,17 +70,7 @@ public class GameCont {
         var row = GridPane.getRowIndex(square);
         var col = GridPane.getColumnIndex(square);
         System.out.printf("Click on square (%d,%d)%n", row, col);
-        var coin = (Circle) square.getChildren().get(0);
-        coin.setFill(nextColor((Color) coin.getFill()));
+        model.move(row, col);
     }
 
-    private Color nextColor(Color color) {
-        if (color == Color.TRANSPARENT) {
-            return Color.RED;
-        }
-        if (color == Color.RED) {
-            return Color.BLUE;
-        }
-        return Color.TRANSPARENT;
-    }
 }

@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="650.0" maxWidth="600.0" minHeight="650.0" minWidth="600.0" prefHeight="650.0" prefWidth="600.0" styleClass="borderpane" stylesheets="@ui.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ColorCollection.StartCont">
+<BorderPane maxHeight="650.0" maxWidth="600.0" minHeight="650.0" minWidth="600.0" prefHeight="650.0" prefWidth="600.0" styleClass="borderpane" stylesheets="@ui.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ColorCollection.controllers.StartCont">
     <center>
         <VBox alignment="TOP_CENTER" maxHeight="282.0" prefHeight="150.0" prefWidth="600.0" styleClass="menu" stylesheets="@ui.css" BorderPane.alignment="CENTER">
             <children>

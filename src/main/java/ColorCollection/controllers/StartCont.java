@@ -1,5 +1,6 @@
-package ColorCollection;
+package ColorCollection.controllers;
 
+import ColorCollection.controllers.GameCont;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
