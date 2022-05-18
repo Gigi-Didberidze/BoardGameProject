@@ -5,6 +5,9 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 
 import java.time.LocalDateTime;
 
+/**
+ * Class that handles board game model
+ */
 public class BoardGameModel {
     public static int BOARD_SIZE = 4;
     public int numberOfStones = 0;
@@ -29,12 +32,22 @@ public class BoardGameModel {
         return board[i][j].get();
     }
 
+    /**
+     * This method handles the player move
+     * @param playerModel model of the player
+     * @param i row
+     * @param j column
+     */
     public void move(PlayerModel playerModel,int i, int j) {
         //change the color of the circle
         //check if it goal state
         setSquareColor(playerModel,i,j);
     }
 
+    /**
+     * Returns the model converted into a String
+     * @return Model converted into a String
+     */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (var i = 0; i < BOARD_SIZE; i++) {
@@ -46,16 +59,9 @@ public class BoardGameModel {
         return sb.toString();
     }
 
-  /*
-    new method goal state (BoardGameModel model){
-    check if the board has reached the ending.
-    for (var i = 0; i < BOARD_SIZE; i++) {
-            for (var j = 0; j < BOARD_SIZE; j++) {
-                board[i][j].get().ordinal()
-    if model.contains (1,2,3,4) {
-        return true;
-    }
-    }
+    /**
+     * Returns True if any column of the model contains different color of stones
+     * @return True if any column of the model contains different color of stones
      */
     public boolean columnGoalCheck(){
         int count;
@@ -99,6 +105,10 @@ public class BoardGameModel {
         return false;
     }
 
+    /**
+     * True if any row of the model contains different color of stones
+     * @return True if any row of the model contains different color of stones
+     */
     public boolean rowGoalCheck(){
         int count;
         for(var i = 0; i < BOARD_SIZE ;i++){
@@ -141,6 +151,10 @@ public class BoardGameModel {
         return false;
     }
 
+    /**
+     * Returns True if model reaches goal state
+     * @return True if model reaches goal state
+     */
     public Boolean isGoalState(){
         if(rowGoalCheck() || columnGoalCheck()){
             return true;
@@ -148,6 +162,12 @@ public class BoardGameModel {
         return false;
     }
 
+    /**
+     * This method sets the color of the square
+     * @param playerModel model of the player
+     * @param i row
+     * @param j column
+     */
     public void setSquareColor(PlayerModel playerModel,int i, int j){
         if (playerModel.getFirstPlayersTurn()){
                 board[i][j].set(
@@ -171,6 +191,10 @@ public class BoardGameModel {
         }
     }
 
+    /**
+     * This method changes the player's turn
+     * @param playerModel model of the player
+     */
     public void changePlayer(PlayerModel playerModel){
         if(playerModel.getFirstPlayersTurn()){
             playerModel.setFirstPlayersTurn(false);
@@ -180,10 +204,18 @@ public class BoardGameModel {
         setNumberOfStones(getNumberOfStones()+1);
     }
 
+    /**
+     * Getter method for number of stones
+     * @return  number of stones
+     */
     public int getNumberOfStones(){
         return numberOfStones;
     }
 
+    /**
+     * Setter for Number of Stones
+     * @param numberOfStones number of stones
+     */
     public void setNumberOfStones(int numberOfStones){
         this.numberOfStones = numberOfStones;
     }
