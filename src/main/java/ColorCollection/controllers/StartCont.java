@@ -32,11 +32,13 @@ public class StartCont {
             missingPlayersLabel.setText("Please Enter both Player names");
         }
         else{
-            fxmlLoader.setLocation(getClass().getResource("/ui.fxml"));
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            GameCont controller = new GameCont();
+            controller.playerModel.setPlayerOneName(playerOneTF.getText());
+            controller.playerModel.setPlayerTwoName(playerTwoTF.getText());
+            fxmlLoader.setLocation(this.getClass().getClassLoader().getResource("ui.fxml"));
+            fxmlLoader.setController(controller);
             Parent root = fxmlLoader.load();
-//            fxmlLoader.<GameCont>getController().setFirstPlayer(playerOneTF.getText());
-//            fxmlLoader.<GameCont>getController().setSecondPlayer(playerTwoTF.getText());
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         }
@@ -44,10 +46,5 @@ public class StartCont {
 
     @FXML
     public void openSheet(ActionEvent actionEvent) throws IOException {
-        fxmlLoader.setLocation(getClass().getResource("/ui.fxml"));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Parent root = fxmlLoader.load();
-        stage.setScene(new Scene(root));
-        stage.show();
     }
 }

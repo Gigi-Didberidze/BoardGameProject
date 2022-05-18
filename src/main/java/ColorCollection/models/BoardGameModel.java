@@ -3,8 +3,12 @@ package ColorCollection.models;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 
+import java.time.LocalDateTime;
+
 public class BoardGameModel {
     public static int BOARD_SIZE = 4;
+    public int numberOfStones = 0;
+    public LocalDateTime startingDateAndTime;
 
     private ReadOnlyObjectWrapper<Square>[][] board = new ReadOnlyObjectWrapper[BOARD_SIZE][BOARD_SIZE];
 
@@ -14,6 +18,7 @@ public class BoardGameModel {
                 board[i][j] = new ReadOnlyObjectWrapper<Square>(Square.EMPTY);
             }
         }
+        startingDateAndTime = LocalDateTime.now();
     }
 
     public ReadOnlyObjectProperty<Square> squareProperty(int i, int j) {
@@ -172,8 +177,16 @@ public class BoardGameModel {
         }else{
             playerModel.setFirstPlayersTurn(true);
         }
+        setNumberOfStones(getNumberOfStones()+1);
     }
 
+    public int getNumberOfStones(){
+        return numberOfStones;
+    }
+
+    public void setNumberOfStones(int numberOfStones){
+        this.numberOfStones = numberOfStones;
+    }
     public static void main(String[] args) {
         var model = new BoardGameModel();
         System.out.println(model);

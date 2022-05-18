@@ -2,6 +2,8 @@ package ColorCollection.controllers;
 
 import ColorCollection.models.BoardGameModel;
 import ColorCollection.models.PlayerModel;
+import ColorCollection.models.ResultModel;
+import javafx.application.Platform;
 import javafx.beans.binding.ObjectBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,14 +13,23 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
 public class GameCont {
     @FXML
     private GridPane board;
 
+    @FXML
+    private Text playerTurnText;
+
+    @FXML
+    private Text winnerNameText;
+
     BoardGameModel model = new BoardGameModel();
 
     PlayerModel playerModel = new PlayerModel();
+
+    ResultModel resultModel = new ResultModel();
     @FXML
     private void initialize() {
         for (var i = 0; i < board.getRowCount(); i++) {
@@ -27,6 +38,12 @@ public class GameCont {
                 board.add(square, j, i);
             }
         }
+        Platform.runLater(
+                ()-> {
+                    playerTurnText.setText(playerModel.getPlayerOneName() + "'s turn!");
+                    winnerNameText.setText("");
+                });
+
     }
 
     private StackPane createSquare(int i, int j) {
@@ -66,13 +83,34 @@ public class GameCont {
         System.out.println(model.toString());
         if(model.isGoalState()){
             System.out.println("WIN");
+            resultModel.setPlayerOneName(playerModel.getPlayerOneName());
+            resultModel.setPlayerTwoName(playerModel.getPlayerTwoName());
+            resultModel.setStartingDateAndTime(model.startingDateAndTime);
+            if(playerModel.getFirstPlayersTurn()) {
+                resultModel.setWinner(playerModel.getPlayerOneName());
+            }else{
+                resultModel.setWinner(playerModel.getPlayerTwoName());
+            }
+            winnerNameText.setText(resultModel.getWinner() + " Wins!!");
+            System.out.println(resultModel.getStartingDateAndTime());
+        }
+        else if(!model.isGoalState() && model.getNumberOfStones() == 11){
+            System.out.println("DRAW");
+            winnerNameText.setText("Draw!");
         }
     }
 
     @FXML
     void endTurnPressed(ActionEvent event) {
         //change the player
+        if (playerModel.getFirstPlayersTurn()){
+            playerTurnText.setText(playerModel.getPlayerTwoName() + "'s Turn!");
+        }else{
+            playerTurnText.setText(playerModel.getPlayerOneName() + "'s Turn!");
+        }
+        resultModel.setNumberOfMoves(resultModel.getNumberOfMoves()+1);
         model.changePlayer(playerModel);
+
     }
 
 }
