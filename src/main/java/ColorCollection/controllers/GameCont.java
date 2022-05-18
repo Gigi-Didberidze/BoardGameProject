@@ -1,7 +1,9 @@
 package ColorCollection.controllers;
 
 import ColorCollection.models.BoardGameModel;
+import ColorCollection.models.PlayerModel;
 import javafx.beans.binding.ObjectBinding;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -13,20 +15,10 @@ import javafx.scene.shape.Circle;
 public class GameCont {
     @FXML
     private GridPane board;
-    private String firstPlayer;
-    private String secondPlayer;
-    private String winnerName = "";
-
-    public void setFirstPlayer(String firstPlayer) {
-        this.firstPlayer = firstPlayer;
-    }
-
-    public void setSecondPlayer(String secondPlayer) {
-        this.secondPlayer = secondPlayer;
-    }
 
     BoardGameModel model = new BoardGameModel();
 
+    PlayerModel playerModel = new PlayerModel();
     @FXML
     private void initialize() {
         for (var i = 0; i < board.getRowCount(); i++) {
@@ -71,6 +63,11 @@ public class GameCont {
         var col = GridPane.getColumnIndex(square);
         System.out.printf("Click on square (%d,%d)%n", row, col);
         model.move(row, col);
+    }
+
+    @FXML
+    void endTurnPressed(ActionEvent event) {
+        //change the player
     }
 
 }

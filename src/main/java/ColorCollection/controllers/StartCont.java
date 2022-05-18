@@ -35,8 +35,8 @@ public class StartCont {
             fxmlLoader.setLocation(getClass().getResource("/ui.fxml"));
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Parent root = fxmlLoader.load();
-            fxmlLoader.<GameCont>getController().setFirstPlayer(playerOneTF.getText());
-            fxmlLoader.<GameCont>getController().setSecondPlayer(playerTwoTF.getText());
+//            fxmlLoader.<GameCont>getController().setFirstPlayer(playerOneTF.getText());
+//            fxmlLoader.<GameCont>getController().setSecondPlayer(playerTwoTF.getText());
             stage.setScene(new Scene(root));
             stage.show();
         }
